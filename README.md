@@ -156,7 +156,7 @@ insp3ctra/
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/insp3ctra.git
+git clone https://github.com/nakshtrayadav/insp3ctra.git
 cd insp3ctra
 pip install -r requirements.txt
 python run_dashboard.py
