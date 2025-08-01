@@ -1,0 +1,164 @@
+{% extends "layout.html" %}
+
+{% block title %}insp3ctra Dashboard{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let lineChart, pieChart;
+
+  function initCharts() {
+    const ctxLine = document.getElementById('lineChart').getContext('2d');
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
+
+    lineChart = new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: Array(20).fill(""),
+        datasets: [{
+          label: 'Packets/sec',
+          data: Array(20).fill(0),
+          backgroundColor: 'rgba(16,185,129,0.3)',
+          borderColor: 'rgba(16,185,129,1)',
+          fill: true,
+          tension: 0.2
+        }]
+      },
+      options: {
+        animation: false,
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+    pieChart = new Chart(ctxPie, {
+      type: 'pie',
+      data: {
+        labels: ['TCP', 'UDP', 'DNS', 'HTTP', 'OTHER'],
+        datasets: [{
+          label: 'Protocol Breakdown',
+          data: [0, 0, 0, 0, 0],
+          backgroundColor: [
+            '#10b981', // TCP
+            '#3b82f6', // UDP
+            '#f59e0b', // DNS
+            '#ef4444', // HTTP
+            '#6b7280'  // OTHER
+          ]
+        }]
+      },
+      options: {
+        animation: false
+      }
+    });
+  }
+
+  async function updateMetrics() {
+    const res = await fetch('/metrics');
+    const json = await res.json();
+
+    // Update line chart
+    const pps = json.packets_per_sec.slice(-20);
+    lineChart.data.datasets[0].data = pps.length ? pps : Array(20).fill(0);
+    lineChart.update();
+
+    // Normalize protocol counts
+    const counts = {
+      TCP: 0,
+      UDP: 0,
+      DNS: 0,
+      HTTP: 0,
+      OTHER: 0,
+      ...json.protocol_counts
+    };
+
+    pieChart.data.datasets[0].data = [
+      counts.TCP,
+      counts.UDP,
+      counts.DNS,
+      counts.HTTP,
+      counts.OTHER
+    ];
+    pieChart.update();
+
+    // Update anomaly log
+    const log = document.getElementById('anomaly-log');
+    log.innerHTML = '';
+    json.anomalies.slice().reverse().forEach(msg => {
+      const entry = document.createElement('div');
+      entry.textContent = msg;
+      entry.style.marginBottom = '4px';
+      log.appendChild(entry);
+    });
+  }
+
+  async function stopCapture() {
+    await fetch('/stop', { method: 'POST' });
+    updateStatus();
+  }
+
+  async function updateStatus() {
+    const res = await fetch('/status');
+    const json = await res.json();
+    document.getElementById('status').innerText = json.sniffing ? '🟢 Running' : '🔴 Stopped';
+  }
+
+  async function clearLogs() {
+    const res = await fetch('/clear_logs', { method: 'POST' });
+    const json = await res.json();
+    alert("📁 " + json.status);
+  }
+
+  async function runCommand() {
+    const input = document.getElementById('cmdInput').value;
+    const res = await fetch('/run_command', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ command: input })
+    });
+    const json = await res.json();
+    const output = document.getElementById('terminal-output');
+    const result = (json.error ? "❌ " : "✔️ ") + json.output;
+    output.innerText = result + "\n" + output.innerText;
+  }
+
+  setInterval(() => {
+    updateStatus();
+    updateMetrics();
+  }, 2000);
+
+  window.onload = () => {
+    initCharts();
+    updateMetrics();
+  };
+</script>
+{% endblock %}
+
+{% block content %}
+  <div class="section">
+    {% include "components/status_panel.html" %}
+  </div>
+
+  <div class="section">
+    {% include "components/interface_selector.html" %}
+    {% include "components/control_buttons.html" %}
+  </div>
+
+  <div class="section">
+    {% include "components/terminal_block.html" %}
+  </div>
+
+  <div class="section">
+    <h3>📊 Real-Time Packet Charts</h3>
+    <canvas id="lineChart" width="600" height="100"></canvas>
+    <canvas id="pieChart" width="600" height="100" style="margin-top: 1rem;"></canvas>
+  </div>
+
+  <div class="section">
+    <h3>🧨 Anomaly Alerts</h3>
+    <div id="anomaly-log" style="background: #111; color: #ff4d4d; padding: 10px; font-family: monospace; font-size: 14px; height: 150px; overflow-y: auto; border: 1px solid #444;">
+      <!-- Logs will be inserted here -->
+    </div>
+  </div>
+{% endblock %}

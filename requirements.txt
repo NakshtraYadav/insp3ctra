@@ -1,0 +1,8 @@
+scapy
+flask
+matplotlib
+plotly
+rich
+requests
+flask-cors
+psutil

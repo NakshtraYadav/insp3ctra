@@ -1,0 +1,19 @@
+<!-- components/control_buttons.html -->
+<div style="margin-top: 1rem;">
+  <button onclick="startCapture()" style="background-color: #10b981;">Start</button>
+  <button onclick="stopCapture()" style="background-color: #ef4444;">Stop</button>
+  <button onclick="clearLogs()" style="background-color: #6b7280;">Clear Logs</button>
+<a href="/log_viewer" target="_blank" style="text-decoration: none;">
+  <button style="background-color: #3b82f6;">Log Viewer</button>
+</a>
+<a href="/export_pcap">
+<button onclick="exportPcap()" style="background-color: #f59e0b;">Export PCAP</button>
+
+<div id="export-progress" style="display:none; margin-top: 1rem;">
+  <div style="background-color: #e5e7eb; border-radius: 0.375rem; overflow: hidden; height: 1rem; width: 100%;">
+    <div id="progress-bar" style="width: 0%; background-color: #f59e0b; height: 100%;"></div>
+  </div>
+  <div id="export-status" style="margin-top: 0.5rem; font-size: 0.9rem;">Preparing export...</div>
+</div>
+</a>
+</div>
