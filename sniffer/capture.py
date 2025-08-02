@@ -11,14 +11,22 @@ sniffing_flag = {"active": True}
 console = Console()
 captured_packets = []
 
+<<<<<<< HEAD
 def packet_handler(packet, filters, iface_name):
+=======
+def packet_handler(packet, filters):
+>>>>>>> 188f5349327b4bfbaa7beda3029d6fa2b9e7c9d9
     if apply_filters(packet, filters):
         log_packet(packet)
         detect_anomaly(packet)
         captured_packets.append(packet)
         info = extract_info(packet)
         console.print(
+<<<<<<< HEAD
             f"[green]Captured:[/] {info['src']} → {info['dst']} :: {info['proto']} on [bold cyan]{iface_name}[/]"
+=======
+            f"[green]Captured:[/] {info['src']} → {info['dst']} :: {info['proto']}"
+>>>>>>> 188f5349327b4bfbaa7beda3029d6fa2b9e7c9d9
         )
 
 def sniff_on_interface(iface, filters, count): 
@@ -29,7 +37,11 @@ def sniff_on_interface(iface, filters, count):
         while sniffing_flag["active"] and captured < packet_limit:
             sniffed = sniff(
                 iface=iface,
+<<<<<<< HEAD
                 prn=lambda pkt: packet_handler(pkt, filters, iface),
+=======
+                prn=lambda pkt: packet_handler(pkt, filters),
+>>>>>>> 188f5349327b4bfbaa7beda3029d6fa2b9e7c9d9
                 store=False,
                 timeout=1
             )

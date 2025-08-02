@@ -73,6 +73,7 @@ def clear_logs():
 
 @app.route("/run_command", methods=["POST"])
 def run_command():
+<<<<<<< HEAD
     cmd = request.json.get("command", "").strip()
 
     if not cmd:
@@ -97,6 +98,25 @@ def run_command():
     except Exception as e:
         return jsonify({"output": f"🔥 {str(e)}", "error": True})
 
+=======
+    cmd = request.json.get("command", "")
+    try:
+        allowed_cmds = ["ping", "nslookup", "curl", "tracert", "whois"]
+        if not any(cmd.startswith(a) for a in allowed_cmds):
+            return jsonify({"output": "❌ Command not allowed", "error": True})
+
+        if cmd.startswith("ping") and "-n" not in cmd:
+            cmd += " -n 1"
+
+        result = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, timeout=10, universal_newlines=True)
+        return jsonify({"output": result, "error": False})
+    except subprocess.TimeoutExpired:
+        return jsonify({"output": f"❌ Command '{cmd}' timed out after 10 seconds", "error": True})
+    except subprocess.CalledProcessError as e:
+        return jsonify({"output": e.output, "error": True})
+    except Exception as e:
+        return jsonify({"output": str(e), "error": True})
+>>>>>>> 188f5349327b4bfbaa7beda3029d6fa2b9e7c9d9
 
 @app.route("/interfaces")
 def get_interfaces():
