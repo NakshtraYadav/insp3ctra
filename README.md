@@ -30,11 +30,11 @@
 | Terminal command runner         | Run `ping`, `curl`, etc. via UI             | ✅ Completed    | subprocess                         |
 | Interface selector (Choices.js) | UI-enhanced network selector                | ✅ Completed    | JS + psutil                        |
 | Anomaly detection (SYN flood)   | Detect flood attacks                        | ✅ Completed    | TCP flags heuristic                |
+| Log Viewer                      | Visual explorer for CSV/JSON logs           | ✅ Completed    | JS + Flask API                     |
 | Real-time alert streaming       | Show anomalies in UI                        | 🔁 Buggy        | polling `/anomaly_log`             |
 | Anomaly log file persistence    | Write alerts to disk                        | ⏳ Planned      | `anomalies.txt` or `json`          |
-| ML anomaly detection            | Smarter detection via clustering            | 💤 Optional     | PyOD, scikit-learn                 |
-| Packet inspector view           | Expand/collapse packet content              | 💤 Optional     | HTML/JS                            |
-| Log Viewer                      | Visual explorer for CSV/JSON logs           | ✅ Completed    | JS + Flask API                     |
+| ML anomaly detection            | Smarter detection via clustering            | ⏳ Planned      | PyOD, scikit-learn                 |
+| Packet inspector view           | Expand/collapse packet content              | ⏳ Planned      | HTML/JS                            |
 | CI/CD integration               | Lint/test on GitHub push                    | ⏳ Planned      | GitHub Actions                     |
 | `setup.py` packaging            | Make insp3ctra pip-installable              | ⏳ Planned      | setuptools                         |
 
@@ -85,7 +85,7 @@ insp3ctra/
 │   │       ├── control_buttons.html
 │   │       ├── interface_selector.html
 │   │       ├── status_panel.html
-│   │       └── terminal_block.html
+│   │       
 │
 ├── data/
 │   ├── packets.csv             # Rotating logs (CSV)
@@ -127,7 +127,7 @@ insp3ctra/
 - ✅ Supports CLI or dashboard control
 - ✅ Uses `Choices.js` for dropdown enhancement
 - ✅ Logging designed to support future JSON ingestion
-- 🔧 Developed by [Nakshtra Yadav](https://github.com/NakshtraYadav)
+- 🔧 Developed by [Nakshtra Yadav](https://www.linkedin.com/in/nakshtrayadav/)
 
 
 
@@ -140,13 +140,11 @@ insp3ctra/
 - [x] Dashboard: Start/Stop, Terminal, Log Viewer
 - [x] PCAP export
 
-### Upcoming
+### Future Advancements
 - [ ] Fix anomaly polling bug without breaking dashboard
 - [ ] Add persistent anomaly log file
 - [ ] Enable `setup.py` packaging
 - [ ] Add CI with GitHub Actions
-
-### Optional
 - [ ] ML detection (PyOD)
 - [ ] Packet replay from PCAP
 - [ ] Toasts/audio on anomalies
