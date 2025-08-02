@@ -1,0 +1,52 @@
+<!-- components/interface_selector.html -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+<div style="margin-top: 1rem; margin-bottom: 1rem;">
+  <label for="ifaceSelect"><strong>Network Interface:</strong></label><br>
+  <select id="ifaceSelect" multiple></select>
+</div>
+
+<script>
+  let choices;
+
+  async function fetchInterfaces() {
+    const res = await fetch('/interfaces');
+    const json = await res.json();
+    const select = document.getElementById('ifaceSelect');
+
+    if (choices) {
+      choices.destroy();
+    }
+
+    select.innerHTML = '';
+    json.interfaces.forEach(i => {
+      const opt = document.createElement('option');
+      opt.value = i.value;
+      opt.text = i.label;
+      select.appendChild(opt);
+    });
+
+    choices = new Choices(select, {
+      removeItemButton: true,
+      placeholder: true,
+      placeholderValue: 'Select network interface(s)',
+      searchPlaceholderValue: 'Search interfaces...'
+    });
+  }
+
+  async function startCapture() {
+    const selected = Array.from(document.getElementById('ifaceSelect').selectedOptions).map(opt => opt.value);
+    await fetch('/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ interfaces: selected })
+    });
+    updateStatus();
+  }
+
+  window.onload = function () {
+    fetchInterfaces();
+    updateStatus();
+  };
+</script>
