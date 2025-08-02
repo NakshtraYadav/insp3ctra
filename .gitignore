@@ -1,1 +1,23 @@
 data/ 
+# ❌ PyInstaller output
+/dist/
+/build/
+/*.spec
+
+# ❌ Python caches
+__pycache__/
+/*.py[cod]
+
+# ❌ Data/output logs
+/data/
+*.pcap
+*.csv
+*.json
+
+# ❌ System files
+.DS_Store
+Thumbs.db
+
+# ❌ IDE folders
+.vscode/
+.idea/
