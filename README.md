@@ -1,199 +1,134 @@
-<<<<<<< HEAD
-# 🐍 Packet Sniffer – by Nakshtra Yadav
+# insp3ctra
 
-A Windows 11-compatible Python-based packet sniffer built with Scapy, complete with:
-
-✅ Packet capture + filtering  
-✅ Structured logging (CSV/JSON)  
-✅ Basic anomaly detection (SYN flood)  
-✅ Optional Flask dashboard  
-✅ Pretty CLI (rich)
-
-## 🚀 Features
-
-- Capture and log HTTP, DNS, TCP, UDP
-- Save to CSV and JSON
-- Detect abnormal traffic surges (e.g., SYN flood)
-- Visualize packet flow (stubbed)
-- Run as a CLI or via Flask dashboard
-
-## 📦 Install
-
-```bash
-git clone https://github.com/yourrepo/packet-sniffer
-cd packet-sniffer
-pip install -r requirements.txt
-=======
-# 🛡️ insp3ctra: A Modular Packet Sniffer & Web Dashboard
+**Modular Packet Sniffer and Web Dashboard for Windows, built by [Nakshtra Yadav](https://www.linkedin.com/in/nakshtrayadav/)**
 
 ---
 
-## 📌 Overview
+## Overview
 
-- **Name**: `insp3ctra`
-- **Type**: Modular Packet Sniffer & Security Toolkit for Windows
-- **Users**: Cybersecurity learners, sysadmins, penetration testers, portfolio builders
-- **Main Objectives**:
-  - Real-time multi-interface packet capture
-  - Structured logging (CSV, JSON)
-  - PCAP export for offline analysis
-  - Dashboard-based control via Flask UI
-  - Basic anomaly detection (e.g., SYN flood)
-  - Extensible, cross-platform, scriptable
+insp3ctra is a modular and extensible packet sniffing toolkit built for Windows environments, designed with a focus on real-world usability, security analysis, and portfolio-ready software engineering. It provides both a CLI and a Flask-powered web dashboard interface for real-time network monitoring, logging, and control.
 
+Key objectives:
+- Multi-interface packet capture (Wi-Fi, Ethernet, etc.)
+- Protocol-based filtering (TCP, UDP, DNS, HTTP)
+- Structured CSV and JSON logging with rotation
+- PCAP export for forensic analysis in Wireshark
+- Live web-based control dashboard
+- Built-in anomaly detection (SYN flood)
+- Terminal command execution via browser
+- Easily deployable as a Windows executable
 
+---
 
-## 🚀 Features
+## Core Features
 
-| Feature                         | Purpose                                      | Status        | Tech Stack                        |
-|---------------------------------|----------------------------------------------|----------------|------------------------------------|
-| Multi-interface sniffing        | Capture traffic on one or more adapters     | ✅ Completed    | Scapy, threading, psutil           |
-| Protocol filtering              | Filter by TCP, UDP, DNS, HTTP               | ✅ Completed    | Scapy layers                       |
-| CSV + JSON Logging              | Persistent structured logs                   | ✅ Completed    | `csv`, `json`                      |
-| PCAP export                     | Offline forensic analysis                   | ✅ Completed    | `wrpcap()`                         |
-| Flask Dashboard                 | Web-based control interface                 | ✅ Completed    | Flask, Jinja2                      |
-| Clear logs button               | Reset log files easily                      | ✅ Completed    | Flask POST                         |
-| Terminal command runner         | Run `ping`, `curl`, etc. via UI             | ✅ Completed    | subprocess                         |
-| Interface selector (Choices.js) | UI-enhanced network selector                | ✅ Completed    | JS + psutil                        |
-| Anomaly detection (SYN flood)   | Detect flood attacks                        | ✅ Completed    | TCP flags heuristic                |
-| Log Viewer                      | Visual explorer for CSV/JSON logs           | ✅ Completed    | JS + Flask API                     |
-| Real-time alert streaming       | Show anomalies in UI                        | 🔁 Buggy        | polling `/anomaly_log`             |
-| Anomaly log file persistence    | Write alerts to disk                        | ⏳ Planned      | `anomalies.txt` or `json`          |
-| ML anomaly detection            | Smarter detection via clustering            | ⏳ Planned      | PyOD, scikit-learn                 |
-| Packet inspector view           | Expand/collapse packet content              | ⏳ Planned      | HTML/JS                            |
-| CI/CD integration               | Lint/test on GitHub push                    | ⏳ Planned      | GitHub Actions                     |
-| `setup.py` packaging            | Make insp3ctra pip-installable              | ⏳ Planned      | setuptools                         |
+| Feature                        | Description                                                   | Status       |
+|-------------------------------|---------------------------------------------------------------|--------------|
+| Multi-interface sniffing      | Capture packets from one or more adapters                    | Complete     |
+| Protocol filtering            | TCP, UDP, DNS, HTTP filtering using Scapy                    | Complete     |
+| Log rotation                  | Auto-rollover at 100MB to new CSV/JSON files                 | Complete     |
+| PCAP export                   | Export captured packets to .pcap for use in Wireshark        | Complete     |
+| Flask web dashboard           | Start/Stop capture, view logs, control terminal              | Complete     |
+| Web-based terminal            | Run any system command from dashboard                        | Complete     |
+| SYN flood detection           | Flags flood attempts using TCP flag heuristics               | Complete     |
+| Interface selector UI         | Built with Choices.js, detects available adapters            | Complete     |
+| Log viewer                    | In-browser filterable view for CSV/JSON logs                 | Complete     |
+| Real-time anomaly alerting    | Display anomaly buffer in dashboard                          | Buggy        |
+| Persistent anomaly logging    | Save anomalies to file (planned)                             | Planned      |
+| setup.py packaging            | Installable via pip (planned)                                | Planned      |
+| CI/CD with GitHub Actions     | Automated testing and deployment (planned)                   | Planned      |
+| ML-based anomaly detection    | Optional PyOD/scikit-learn integration                       | Planned      |
+| Packet replay                 | Optional replay from PCAP into dashboard                     | Planned     |
 
+---
 
+## Architecture
 
-## 🧱 Architecture
+- Multi-threaded sniffing using `threading.Thread`
+- Modular folder structure separating CLI, sniffer logic, dashboard, and templates
+- Logs written in rotating format under `data/`
+- Web interface built with Flask and vanilla JS, using Choices.js for modern UI
+- PyInstaller-compatible execution with self-contained `.exe` build
 
-- **Threaded sniffing**: `threading.Thread` per interface, 1s timeout loops
-- **Shared capture flag**: Global dict `sniffing_flag` used for Start/Stop
-- **Log rotation**: New `packets2.csv/json` created at 100MB max per file
-- **Frontend modularity**: Templates split under `dashboard/templates/components`
-- **JS polling**: Dashboard polls `/status` and `/anomaly_log` (optional)
-- **Removed complexity**: Realtime charts and GeoIP support were deprecated
+---
 
+## Technology Stack
 
+- Language: Python 3.13
+- Network engine: Scapy
+- Web backend: Flask
+- Frontend: HTML/CSS + Choices.js + Vanilla JS
+- Logging: CSV, JSON, PCAP, rich console
+- Packaging: PyInstaller for Windows executables
+- Deployment target: Windows 10/11, no root required
 
-## 🧰 Dependencies
+---
 
-- **Language**: Python 3.13
-- **Core Libraries**: scapy, Flask, threading, psutil, csv, json, subprocess
-- **Frontend**: Choices.js, vanilla JS
-- **CI/CD**: GitHub Actions (Planned)
-- **Logging**: CSV, JSON, PCAP (binary), console output via `rich.console`
-
-
-
-## 📁 Directory Structure
+## Directory Structure
 
 ```
 insp3ctra/
-├── run_dashboard.py            # Entry point for Flask UI
-├── main.py                     # Optional CLI
+├── run_dashboard.py            # Entry point for Flask UI (EXE-compatible)
+├── main.py                     # Optional CLI runner
 │
 ├── sniffer/
-│   ├── capture.py              # Sniff logic (multi-threaded)
-│   ├── anomalies.py            # SYN flood detection + memory buffer
-│   ├── filters.py              # Packet filter logic
-│   ├── logger.py               # CSV/JSON file logging with rotation
-│   └── exporter.py             # Export to PCAP file
+│   ├── capture.py              # Packet capture and dispatch
+│   ├── anomalies.py            # SYN flood detection
+│   ├── filters.py              # Protocol filtering logic
+│   ├── logger.py               # Logging to CSV/JSON with rotation
+│   └── exporter.py             # PCAP export handler
 │
 ├── dashboard/
-│   ├── app.py                  # Flask routes
-│   ├── templates/
-│   │   ├── layout.html         # HTML shell
-│   │   ├── index.html          # Dashboard page
-│   │   ├── log_viewer.html     # Log viewer with filters
-│   │   └── components/
-│   │       ├── control_buttons.html
-│   │       ├── interface_selector.html
-│   │       ├── status_panel.html
-│   │       
+│   ├── app.py                  # Flask routes and logic
+│   ├── templates/              # HTML templates and components
+│   
 │
-├── data/
-│   ├── packets.csv             # Rotating logs (CSV)
-│   ├── packets.json            # Rotating logs (JSON)
-│   └── insp3ctra_capture.pcap  # Exported packets
+├── data/                       # Logs (created at runtime)
+│   ├── packets.csv
+│   ├── packets.json
+│   └── insp3ctra_capture.pcap
 ```
 
-
-
-## 🔍 Code Modules
-
-- `capture.py`: Runs sniffing loop and routes packets to log + detect
-- `anomalies.py`: Monitors SYN flags, pushes alerts to memory (`anomaly_log`)
-- `exporter.py`: Writes PCAP from all captured packets
-- `app.py`: Flask web interface, routes for `/start`, `/stop`, `/export_pcap`
-- `logger.py`: Rotation-aware logging to `data/` directory
-
-
-
-## 🐞 Known Issues
-
-| Issue                                         | Status        |
-|----------------------------------------------|---------------|
-| Anomaly polling breaks Start/Stop behavior   | 🐞 Known issue |
-| Choices.js requires explicit re-init         | 🧩 Solved once |
-| `/anomaly_log` only works in-memory          | 📌 Known       |
-| PCAP exports no progress for huge captures   | 💤 Optional UX |
-| No persistent alert log on disk              | ⏳ Planned     |
-| JS `window.onload` conflicts in dashboard    | 🧼 Fixed via layout.html rework |
-| No CI/CD or tests yet                        | ⏳ Planned     |
-
-
-
-## 🧭 Design Principles
-
-- ✅ Windows 11-friendly (no root required)
-- ✅ Modular Python code per concern (capture, detect, log)
-- ✅ Clean HTML + inline JS; minimal frameworks
-- ✅ Supports CLI or dashboard control
-- ✅ Uses `Choices.js` for dropdown enhancement
-- ✅ Logging designed to support future JSON ingestion
-- 🔧 Developed by [Nakshtra Yadav](https://www.linkedin.com/in/nakshtrayadav/)
-
-
-
-## 🛣️ Roadmap
-
-### Core
-- [x] Multi-interface capture
-- [x] CSV/JSON log rotation
-- [x] Protocol filter (TCP/UDP/HTTP/DNS)
-- [x] Dashboard: Start/Stop, Terminal, Log Viewer
-- [x] PCAP export
-
-### Future Advancements
-- [ ] Fix anomaly polling bug without breaking dashboard
-- [ ] Add persistent anomaly log file
-- [ ] Enable `setup.py` packaging
-- [ ] Add CI with GitHub Actions
-- [ ] ML detection (PyOD)
-- [ ] Packet replay from PCAP
-- [ ] Toasts/audio on anomalies
-- [ ] Log viewer: pagination or export
 ---
 
-## 📦 Installation
+## Usage
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/NakshtraYadav/insp3ctra.git
+   cd insp3ctra
+   pip install -r requirements.txt
+   ```
+
+2. Launch the dashboard:
+   ```bash
+   python run_dashboard.py
+   ```
+
+3. Open your browser at:
+   ```
+   http://localhost:5000
+   ```
+
+4. Select one or more interfaces, start capture, use terminal, view logs, and export PCAP.
+
+---
+
+## Executable Build (Optional)
+
+insp3ctra can be built into a portable `.exe` with PyInstaller:
 
 ```bash
-git clone https://github.com/nakshtrayadav/insp3ctra.git
-cd insp3ctra
-pip install -r requirements.txt
-python run_dashboard.py
+pip install pyinstaller
+pyinstaller run_dashboard.py --onefile --console --name insp3ctra
 ```
 
-> Make sure you are on **Windows 10/11** with Python 3.10+ and have appropriate network adapter access.
+This will create a standalone Windows executable in the `dist/` directory. It opens a terminal, runs the dashboard server, and saves logs in a `data/` folder.
 
 ---
 
-## 🖥️ Usage
+## Credits
 
-- Launch the dashboard: `python run_dashboard.py`
-- Access it in your browser: `http://localhost:5000`
-- Use the dropdown to select interfaces, then start capture
-- Use the built-in terminal, export logs, view alerts and more
->>>>>>> 188f5349327b4bfbaa7beda3029d6fa2b9e7c9d9
+Developed and maintained by **Nakshtra Yadav**  
+[LinkedIn Profile](https://www.linkedin.com/in/nakshtrayadav/)  
+[GitHub](https://github.com/NakshtraYadav)
