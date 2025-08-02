@@ -131,4 +131,9 @@ This will create a standalone Windows executable in the `dist/` directory. It op
 
 Developed and maintained by **Nakshtra Yadav**  
 [LinkedIn Profile](https://www.linkedin.com/in/nakshtrayadav/)  
+
+
+## Project Screenshots
+<img width="902" height="893" alt="image" src="https://github.com/user-attachments/assets/1d2c3d5b-f1f0-41a8-8dbb-123411c37f02" />
+
 [GitHub](https://github.com/NakshtraYadav)
