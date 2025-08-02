@@ -1,5 +1,4 @@
 # run_dashboard.py - part of insp3ctra
-<<<<<<< HEAD
 import webbrowser
 import threading
 import time
@@ -23,10 +22,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-=======
-from dashboard.app import app
-app.run(debug=True)
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
->>>>>>> 188f5349327b4bfbaa7beda3029d6fa2b9e7c9d9
