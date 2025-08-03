@@ -64,7 +64,7 @@ Key objectives:
 
 ---
 
-## 🧱 Protocol & OSI Layer Support
+## Protocol & OSI Layer Support
 
 insp3ctra captures and analyzes packets across multiple OSI layers:
 
