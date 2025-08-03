@@ -64,6 +64,19 @@ Key objectives:
 
 ---
 
+## 🧱 Protocol & OSI Layer Support
+
+insp3ctra captures and analyzes packets across multiple OSI layers:
+
+- **Layer 2 – Data Link:** Captures packets from live interfaces via Npcap  
+- **Layer 3 – Network:** Inspects IP headers (IPv4/IPv6)  
+- **Layer 4 – Transport:** Parses TCP/UDP protocols, flags, ports  
+- **Layer 7 – Application (lightweight):** Recognizes basic HTTP and DNS patterns for logging/anomaly detection
+
+This tool does not perform deep application-layer decoding (e.g., TLS decryption or full HTTP reconstruction), but can be extended for protocol-specific analysis.**
+
+---
+
 ## Directory Structure
 
 ```
